@@ -3,8 +3,8 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from models.loginModel import LoginModel
 from userRequests.loginRequest import LoginRequest
-import uuid
-import uvicorn
+import uuid, uvicorn, json
+
 
 app = FastAPI()
 
@@ -35,7 +35,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     "balance":moneyBalance
                 }
                 for i in clients:
-                    await i.send_json(json_data)
+                    await i.send_text(json.dumps(json_data))
             else:
                 didNotDisconnect =False
     except WebSocketDisconnect: 

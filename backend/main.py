@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
+from models.loginModel import LoginModel
+from userRequests.loginRequest import LoginRequest
+import uuid
+import uvicorn
 
 app = FastAPI()
 
@@ -12,6 +16,7 @@ def root():
 
 
 clients: list[WebSocket] = []
+users: list[LoginModel] = []
 
 @app.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -36,3 +41,16 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect: 
         clients.remove(websocket)
 
+@app.post("/login")
+def login(loginRequest: LoginRequest):
+    user = LoginModel()
+    user.name = loginRequest.login
+    user.id = str(uuid.uuid4())
+    users.append(user)
+    print(user)
+    return user
+
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8001)

@@ -1,4 +1,3 @@
-from fastapi import FastAPI
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from models.loginModel import LoginModel
@@ -6,6 +5,8 @@ from userRequests.loginRequest import LoginRequest
 import uuid
 import uvicorn # type: ignore
 import json
+from connectionManager import ConnectionManager
+from eventTypes import EventTypes
 
 app = FastAPI()
 
@@ -16,14 +17,13 @@ def root():
     return None
 
 
-clients: list[WebSocket] = []
+manager = ConnectionManager()
 users: list[LoginModel] = []
 
 @app.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     global moneyBalance
-    await websocket.accept()
-    clients.append(websocket)  
+    manager.connect(websocket) 
     try:
         didNotDisconnect = True
         while didNotDisconnect:  
@@ -35,12 +35,11 @@ async def websocket_endpoint(websocket: WebSocket):
                 json_data = {
                     "balance":moneyBalance
                 }
-                for i in clients:
-                    await i.send_text(json.dumps(json_data))
+                manager.broadcast(json.dumps(json_data))
             else:
                 didNotDisconnect =False
     except WebSocketDisconnect: 
-        clients.remove(websocket)
+        manager.disconnect(websocket)
 
 @app.post("/login")
 def login(loginRequest: LoginRequest):
@@ -48,6 +47,10 @@ def login(loginRequest: LoginRequest):
     user.name = loginRequest.login
     user.id = str(uuid.uuid4())
     users.append(user)
+    json_data = {
+        "eventType" : EventTypes.newUser,
+        "data" : users
+    }
     print(user)
     return user
 

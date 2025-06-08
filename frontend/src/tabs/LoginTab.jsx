@@ -24,9 +24,12 @@ function LoginTab() {
 
         const url = cfg.backendURL + "/login"
         const obj = {
-                login: login
+                "login": login
             }
         fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            },
             "method": "POST",
             "body": JSON.stringify(obj)
         }).then(res => res.text()).then(text => {

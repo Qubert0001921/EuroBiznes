@@ -1,1 +1,2 @@
-export const websocket = new WebSocket("ws://localhost:8001/ws")
+import cfg from "./config"
+export const websocket = new WebSocket(cfg.websocketURL)

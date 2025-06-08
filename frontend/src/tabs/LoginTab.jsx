@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import eventTypes from "../eventTypes"
 import { websocket } from "../websocket"
-import axios from "axios"
-import config from "../config" 
+import cfg from "../config" 
+import LoginModel from "../models/loginModel"
 
 function LoginTab() {
     const [login, setLogin] = useState("")
@@ -11,21 +11,33 @@ function LoginTab() {
         console.log(websocket)
     },[])
 
-    async function onLogin() {
-        const jsonData={
-            eventType: eventTypes.login,
-            data: {
-                login
+    function onLogin() {
+        // const jsonData={
+        //     eventType: eventTypes.login,
+        //     data: {
+        //         login
+        //     }
+        // }
+
+        // const loginModel = new LoginModel(login)
+        // const jsonData = JSON.stringify(loginModel)
+
+        const url = cfg.backendURL + "/login"
+        const obj = {
+                login: login
             }
-        }
-        await axios.post("")
-        
+        fetch(url, {
+            "method": "POST",
+            "body": JSON.stringify(obj)
+        }).then(res => res.text()).then(text => {
+            console.log(text)
+        })
     }
 
     return (
         <>
             <label>Login: </label>
-            <input type="text" value={login} onChange={element => setLogin(element.value)}/>
+            <input type="text" value={login} onChange={e => setLogin(e.target.value)}/>
             <button onClick={onLogin}>Login</button>
         </>
     )

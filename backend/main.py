@@ -1,5 +1,5 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect # type: ignore
+from fastapi.responses import HTMLResponse # type: ignore
 from models.loginModel import LoginModel
 from userRequests.loginRequest import LoginRequest
 import uuid
@@ -7,8 +7,21 @@ import uvicorn # type: ignore
 import json
 from connectionManager import ConnectionManager
 from eventTypes import EventTypes
+from fastapi.middleware.cors import CORSMiddleware  # type: ignore
 
 app = FastAPI()
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 moneyBalance: int = 0
 
@@ -32,10 +45,10 @@ async def websocket_endpoint(websocket: WebSocket):
                 print(data)
                 money: int = int(data["text"]) 
                 moneyBalance += money
-                json = {
+                jsonData = {
                     "balance":moneyBalance
                 }
-                await manager.broadcast_json(json)
+                await manager.broadcast_json(jsonData)
             else:
                 didNotDisconnect =False
     except WebSocketDisconnect: 

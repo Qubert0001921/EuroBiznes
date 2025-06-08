@@ -33,6 +33,9 @@ def root():
 manager = ConnectionManager()
 users: list[LoginModel] = []
 
+
+
+
 @app.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     global moneyBalance
@@ -42,7 +45,8 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         didNotDisconnect = True
         while didNotDisconnect:  
-            data = await websocket.receive()
+            jsondData = await websocket.receive_text() #never use websocket.receive()!!!!!
+            data = json.loads(jsondData)
             if data['type'] == "websocket.receive":
                 print(data)
                 money: int = int(data["text"]) 
@@ -55,6 +59,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 didNotDisconnect =False
     except WebSocketDisconnect: 
         manager.disconnect(websocket)
+        
+
 
 
 
@@ -70,6 +76,7 @@ async def login(loginRequest: LoginRequest):
         "data" : json.dumps(users, default=LoginModel.loginModelToJson)
     }
     await manager.broadcast_json(jsonData)
+    
     print(user)
     return user
 

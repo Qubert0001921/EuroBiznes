@@ -13,4 +13,8 @@ class ConnectionManager:
 
     async def broadcast_json(self, jsonData):
         for connection in self.active_connections:
-            await connection.send_text(json.dumps(jsonData)) #json data
+            try:
+                await connection.send_text(json.dumps(jsonData)) #json data
+            except (WebSocketDisconnect):
+                self.disconnect(connection)
+

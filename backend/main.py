@@ -37,6 +37,8 @@ users: list[LoginModel] = []
 async def websocket_endpoint(websocket: WebSocket):
     global moneyBalance
     await manager.connect(websocket) 
+    for i in manager.active_connections:
+        print(i)
     try:
         didNotDisconnect = True
         while didNotDisconnect:  

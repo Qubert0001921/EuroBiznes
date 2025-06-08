@@ -9,7 +9,15 @@ function LoginTab() {
 
     useEffect(() => {
         console.log(websocket)
+
     },[])
+
+    window.addEventListener("beforeunload", e => {
+        e.preventDefault()
+        websocket.close()
+        console.log("websocket connection closed")
+        alert("FHEKJFHWLKJFHLWKJHFLKJH")
+    });
 
     function onLogin() {
         // const jsonData={
@@ -24,11 +32,11 @@ function LoginTab() {
 
         const url = cfg.backendURL + "/login"
         const obj = {
-                "login": "login"
+                "login": login
             }
         fetch(url, {
-            headers:{
-                "Content-Type":"application/json"
+            headers: {
+                "Content-Type": "application/json"
             },
             "method": "POST",
             "body": JSON.stringify(obj)

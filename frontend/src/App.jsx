@@ -1,15 +1,14 @@
+import { useState } from 'react'
 import './App.css'
 import MainTab from './tabs/MainTab'
+import LoginTab from './tabs/LoginTab'
 
 function App() {
-    let ws = new WebSocket("ws://localhost:8000/ws")
-    
-    
-
-    return (
+    const [toggle, setToggle] = useState(false)
+     return (
         <>
-
-            <MainTab websocket={ws} />
+            <button onClick={() => setToggle(!toggle)}>toggle</button>
+            {toggle ? <MainTab /> : <LoginTab />}
         </>
     )
 }

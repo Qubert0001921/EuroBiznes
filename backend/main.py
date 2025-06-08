@@ -47,7 +47,6 @@ async def websocket_endpoint(websocket: WebSocket):
         while didNotDisconnect:  
             jsondData = await websocket.receive_text() #never use websocket.receive()!!!!!
             data = json.loads(jsondData)
-            prints
     except WebSocketDisconnect: 
         manager.disconnect(websocket)
         

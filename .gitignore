@@ -2,4 +2,3 @@ backend/.gitignore
 backend/__pycache__/*
 *.py[cod]
 *.pyc
-backend\__pycache__/*

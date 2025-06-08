@@ -4,7 +4,7 @@ import { websocket } from "../websocket"
 import cfg from "../config" 
 import LoginModel from "../models/loginModel"
 
-let receivedText = 6
+let receivedID
 function LoginTab() {
     const [login, setLogin] = useState("")
 
@@ -35,7 +35,8 @@ function LoginTab() {
             "method": "POST",
             "body": JSON.stringify(obj)
         }).then(res => res.text()).then(text => {
-            receivedText = text
+            let receivedJson = JSON.parse(text)
+            receivedID = receivedJson.id
         })
     }
 
@@ -49,4 +50,4 @@ function LoginTab() {
 }
 
 export default LoginTab
-export {receivedText}
+export {receivedID}

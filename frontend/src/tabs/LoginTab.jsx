@@ -4,11 +4,12 @@ import { websocket } from "../websocket"
 import cfg from "../config" 
 import LoginModel from "../models/loginModel"
 
+let receivedText = 6
 function LoginTab() {
     const [login, setLogin] = useState("")
 
     useEffect(() => {
-        console.log(websocket)
+        //console.log(websocket)
 
     },[])
 
@@ -34,7 +35,7 @@ function LoginTab() {
             "method": "POST",
             "body": JSON.stringify(obj)
         }).then(res => res.text()).then(text => {
-            console.log(text)
+            receivedText = text
         })
     }
 
@@ -48,3 +49,4 @@ function LoginTab() {
 }
 
 export default LoginTab
+export {receivedText}

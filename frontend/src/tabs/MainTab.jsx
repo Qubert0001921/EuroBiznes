@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react"
 import { websocket } from '../websocket'
 
-function MainTab() {
+function MainTab({userID}) {
     const [moneyAmount, setMoneyAmount] = useState(0)
     const [personId, setPersonId] = useState(0)
-    
+    //console.log(userID)
     useEffect(() => {
         // const websocket = new WebSocket("ws://localhost:8001/ws")
-        console.log(websocket)
-        console.log(websocket.binaryType)
 
         websocket.onmessage = function (event){
             // let data = event.data
@@ -27,10 +25,11 @@ function MainTab() {
 
     function onSendMoney() {
         const data = {
-            personId,
+            senderID,
+            receiverID,
             moneyAmount
         }
-       websocket.send(moneyAmount)
+       websocket.send(JSON.stringify(data))
     }
 
     return (

@@ -47,16 +47,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while didNotDisconnect:  
             jsondData = await websocket.receive_text() #never use websocket.receive()!!!!!
             data = json.loads(jsondData)
-            if data['type'] == "websocket.receive":
-                print(data)
-                money: int = int(data["text"]) 
-                moneyBalance += money
-                jsonData = {
-                    "balance":moneyBalance
-                }
-                await manager.broadcast_json(jsonData)
-            else:
-                didNotDisconnect =False
+            prints
     except WebSocketDisconnect: 
         manager.disconnect(websocket)
         

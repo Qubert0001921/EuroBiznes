@@ -1,4 +1,5 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+import json
 class ConnectionManager:
     def __init__(self):
         self.active_connections: list[WebSocket] = []
@@ -10,6 +11,6 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    async def broadcast(self, json_data: str):
+    async def broadcast_json(self, json: str):
         for connection in self.active_connections:
-            await connection.send_text(json_data) #json data
+            await connection.send_text(json.dumps(json)) #json data

@@ -32,10 +32,10 @@ async def websocket_endpoint(websocket: WebSocket):
                 print(data)
                 money: int = int(data["text"]) 
                 moneyBalance += money
-                json_data = {
+                json = {
                     "balance":moneyBalance
                 }
-                manager.broadcast(json.dumps(json_data))
+                manager.broadcast(json)
             else:
                 didNotDisconnect =False
     except WebSocketDisconnect: 
@@ -47,10 +47,11 @@ def login(loginRequest: LoginRequest):
     user.name = loginRequest.login
     user.id = str(uuid.uuid4())
     users.append(user)
-    json_data = {
+    json = {
         "eventType" : EventTypes.newUser,
         "data" : users
     }
+    manager.broadcast(json)
     print(user)
     return user
 

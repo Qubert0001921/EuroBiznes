@@ -23,7 +23,7 @@ users: list[LoginModel] = []
 @app.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     global moneyBalance
-    manager.connect(websocket) 
+    await manager.connect(websocket) 
     try:
         didNotDisconnect = True
         while didNotDisconnect:  
@@ -35,23 +35,26 @@ async def websocket_endpoint(websocket: WebSocket):
                 json = {
                     "balance":moneyBalance
                 }
-                manager.broadcast(json)
+                await manager.broadcast_json(json)
             else:
                 didNotDisconnect =False
     except WebSocketDisconnect: 
         manager.disconnect(websocket)
 
+
+
 @app.post("/login")
-def login(loginRequest: LoginRequest):
+async def login(loginRequest: LoginRequest):
     user = LoginModel()
     user.name = loginRequest.login
     user.id = str(uuid.uuid4())
     users.append(user)
-    json = {
+
+    jsonData = {
         "eventType" : EventTypes.newUser,
-        "data" : users
+        "data" : json.dumps(users, default=LoginModel.loginModelToJson)
     }
-    manager.broadcast(json)
+    await manager.broadcast_json(jsonData)
     print(user)
     return user
 

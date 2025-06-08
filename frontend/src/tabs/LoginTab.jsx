@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import eventTypes from "../eventTypes"
 import { websocket } from "../websocket"
+import axios from "axios"
+import config from "../config" 
 
 function LoginTab() {
     const [login, setLogin] = useState("")
@@ -9,14 +11,14 @@ function LoginTab() {
         console.log(websocket)
     },[])
 
-    function onLogin() {
+    async function onLogin() {
         const jsonData={
             eventType: eventTypes.login,
             data: {
                 login
             }
         }
-        websocket.send(JSON.stringify(jsonData))
+        await axios.post("")
         
     }
 

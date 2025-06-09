@@ -56,19 +56,38 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @app.post("/login")
 async def login(loginRequest: LoginRequest):
+    def checkIfUserExists(userName: str, usersList: list[LoginModel]):
+        for i in usersList:
+            if i.name == userName:
+                return i
+        return False
+    
     user = LoginModel()
     user.name = loginRequest.login
     user.id = str(uuid.uuid4())
-    users.append(user)
+    doesUserExist = checkIfUserExists(userName=user.name, usersList=users)
+    print(doesUserExist)
+    if  doesUserExist == False:
+        users.append(user)
 
-    jsonData = {
-        "eventType" : EventTypes.newUser,
-        "data" : json.dumps(users, default=LoginModel.loginModelToJson)
-    }
-    await manager.broadcast_json(jsonData)
+        jsonData = {
+            "eventType" : EventTypes.newUser,
+            "data" : json.dumps(users, default=LoginModel.loginModelToJson)
+        }
+        await manager.broadcast_json(jsonData)
+        print(json.dumps(users, default=LoginModel.loginModelToJson))
+        print(user.id)
+        print(user.name)
+        return user
+    else:
+        jsonData = {
+            "eventType" : EventTypes.newUser,
+            "data" : json.dumps(users, default=LoginModel.loginModelToJson)
+        }
+        await manager.broadcast_json(jsonData)
+        return doesUserExist
+
     
-    print(user)
-    return user
 
 
 

@@ -30,13 +30,15 @@ function LoginTab() {
             }
         fetch(url, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': "False"
             },
             "method": "POST",
             "body": JSON.stringify(obj)
         }).then(res => res.text()).then(text => {
             let receivedJson = JSON.parse(text)
             receivedID = receivedJson.id
+            console.log(receivedID)
         })
     }
 

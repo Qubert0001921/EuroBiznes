@@ -12,12 +12,12 @@ function MainTab() {
     let userID = localStorage.getItem(cfg.userIDKey)
     
     function findCurrentUser(usersToGet){
-        usersToGet.forEach(i => {
-            if (i.id == userID){
-                console.log(i)
-                return i
+        console.log(usersToGet.length)
+        for(let i=0;i<usersToGet.length;i++) {
+            if ((usersToGet[i].id == userID)){
+                return usersToGet[i]
             }
-        });
+        }
     }
     useEffect(() => {
         async function fetchUsers(){
@@ -25,6 +25,7 @@ function MainTab() {
             let usersRes = await response.text()
             usersRes = JSON.parse(usersRes)
             setUsers(usersRes)
+            console.log(findCurrentUser(usersRes))
             setCurrentUser(findCurrentUser(usersRes))
         }
 

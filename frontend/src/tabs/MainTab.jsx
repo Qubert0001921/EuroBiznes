@@ -12,13 +12,12 @@ function MainTab() {
     let userID = localStorage.getItem(cfg.userIDKey)
     
     function findCurrentUser(usersToGet){
-        let cos = usersToGet.forEach(i => {
+        usersToGet.forEach(i => {
             if (i.id == userID){
                 console.log(i)
                 return i
             }
         });
-        return cos
     }
     useEffect(() => {
         async function fetchUsers(){
@@ -26,7 +25,6 @@ function MainTab() {
             let usersRes = await response.text()
             usersRes = JSON.parse(usersRes)
             setUsers(usersRes)
-            console.log(findCurrentUser(usersRes))
             setCurrentUser(findCurrentUser(usersRes))
         }
 
@@ -52,6 +50,8 @@ function MainTab() {
     },[])
 
     function onSendMoney() {
+
+
         if (receiverID != 0){
             const data = {
                 "eventType":eventTypes.sendMoney,

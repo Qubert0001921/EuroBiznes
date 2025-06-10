@@ -1,3 +1,4 @@
 class EventTypes():
-    newUser = 1
+    broadcastUsers = 1
     sendMoney = 2
+    broadcastMoney = 3

@@ -9,20 +9,11 @@ function LoginTab() {
     const [login, setLogin] = useState("")
 
     useEffect(() => {
-        //console.log(websocket)
+
 
     },[])
 
     function onLogin() {
-        // const jsonData={
-        //     eventType: eventTypes.login,
-        //     data: {
-        //         login
-        //     }
-        // }
-
-        // const loginModel = new LoginModel(login)
-        // const jsonData = JSON.stringify(loginModel)
 
         const url = cfg.backendURL + "/login"
         const obj = {
@@ -39,6 +30,7 @@ function LoginTab() {
             let receivedJson = JSON.parse(text)
             receivedID = receivedJson.id
             console.log(receivedID)
+            localStorage.setItem(cfg.userIDKey, receivedID)
         })
     }
 
@@ -52,4 +44,4 @@ function LoginTab() {
 }
 
 export default LoginTab
-export {receivedID}
+

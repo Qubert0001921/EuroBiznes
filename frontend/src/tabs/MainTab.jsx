@@ -1,43 +1,90 @@
 import { useEffect, useState } from "react"
 import { websocket } from '../websocket'
+import cfg from "../config"
+import eventTypes from "../eventTypes"
+import httpRequest from "../httpRequest"
 
-function MainTab({userID}) {
+function MainTab() {
     const [moneyAmount, setMoneyAmount] = useState(0)
-    const [personId, setPersonId] = useState(0)
-    console.log(userID)
+    const [receiverID, setReceiverID] = useState(0)
+    const [users, setUsers] = useState([])
+    const [currentUser, setCurrentUser] = useState({})
+    let userID = localStorage.getItem(cfg.userIDKey)
+    
+    function findCurrentUser(usersToGet){
+        usersToGet.forEach(i => {
+            if (i.id == userID){
+                console.log(i)
+                return i
+            }
+        });
+    }
     useEffect(() => {
-        // const websocket = new WebSocket("ws://localhost:8001/ws")
+        async function fetchUsers(){
+            let response = await httpRequest.get("/users")
+            let usersRes = await response.text()
+            usersRes = JSON.parse(usersRes)
+            setUsers(usersRes)
+            setCurrentUser(findCurrentUser(usersRes))
+        }
+
+
+        let newOption = document.createElement("option")
+        newOption.value = 
+        document.getElementById("select-people").appendChild
+        fetchUsers()
+
         
         websocket.onmessage = function (event){
-            // let data = event.data
-            // json_data = JSON.parse(data)
-            // console.log(json_data)
-            // console.log(typeof json_data)
-            // document.getElementById("balance").textContent = json_data.balance
-            console.log(event)
+            let data = event.data
+            data = JSON.parse(data)
+            if (data.eventType == eventTypes.broadcastUsers){
+                data = JSON.parse(data.data)
+                console.log(data)
+                setCurrentUser(findCurrentUser(data))
+                setUsers(data)
+            }
         }
-        // document.getElementById("button1").onclick = function (event){
-        //     data = document.getElementById("input").value
-        //     console.log(data)
-            
-        // }
+        
+        
     },[])
 
     function onSendMoney() {
-        const data = {
-            senderID,
-            receiverID,
-            moneyAmount
+
+
+        if (receiverID != 0){
+            const data = {
+                "eventType":eventTypes.sendMoney,
+                "data": {
+                    "senderID":userID,
+                    "moneyAmount":moneyAmount,
+                    "receiverID":receiverID
+                }
+            }
+            websocket.send(JSON.stringify(data))
+        } else{
+            alert("Please select receiver")
         }
-       websocket.send(JSON.stringify(data))
+        
+       
+    console.log(users)
+    console.log(receiverID)
+
+       
     }
+
 
     return (
         <>
-            <label>Where: </label>
-            <select id='select-people' value={personId} onChange={e => setPersonId(e.target.value)}>
-                <option value="1">example1</option>
-                <option value="2">example2</option>
+            <label>Your balance:</label>
+            <label>{currentUser?.money}</label>
+            <label>Where: </label>  
+            <label id="balance"></label>
+            <select id='select-people' value={receiverID} onChange={e => setReceiverID(e.target.value)}>
+                <option value={0}>Please select receiver</option>
+                {
+                    users.map(user => <option value={user.id} key={user.id}>{user.name}</option>)
+                }
             </select>
             <p> {userID}</p>
             <label>How much money: </label>

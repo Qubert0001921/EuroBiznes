@@ -22,6 +22,7 @@ function MainTab() {
     useEffect(() => {
         async function fetchUsers(){
             let response = await httpRequest.get("/users")
+            console.log("kupa")
             let usersRes = await response.text()
             usersRes = JSON.parse(usersRes)
             setUsers(usersRes)

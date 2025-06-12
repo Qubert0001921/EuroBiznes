@@ -3,10 +3,10 @@ import eventTypes from "../eventTypes"
 import { websocket } from "../websocket"
 import cfg from "../config" 
 import LoginModel from "../models/loginModel"
-
-let receivedID
+import { useNavigate } from "react-router-dom"
 function LoginTab() {
     const [login, setLogin] = useState("")
+    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -28,10 +28,11 @@ function LoginTab() {
             "body": JSON.stringify(obj)
         }).then(res => res.text()).then(text => {
             let receivedJson = JSON.parse(text)
-            receivedID = receivedJson.id
+            let receivedID = receivedJson.id
             console.log(receivedID)
             localStorage.setItem(cfg.userIDKey, receivedID)
         })
+        navigate("/app")
     }
 
     return (

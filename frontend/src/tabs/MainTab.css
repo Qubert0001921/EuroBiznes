@@ -1,0 +1,21 @@
+#box{
+    display: flex;
+    flex-direction: column;
+    min-width: 270px;
+}
+#box-balance{
+    min-height: 100px;
+    min-width: 70px;
+    background-color: rgb(66, 66, 66);
+    border: 3px solid;
+    border-color:rgb(85, 85, 85);
+    border-radius: 8px;
+    display:flex;
+    
+}
+#money{
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

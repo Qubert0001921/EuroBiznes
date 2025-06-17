@@ -42,17 +42,35 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #646cff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #565ddb7a;
+  background-color: #565ddb;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+input{
+    font-family: inherit;
+  border: 1px;
+  border-radius: 4px;
+  min-height: 25px;
+}
+label{
+    font-family: inherit;
+}
+select{
+    font-family: inherit;
+}
+
+
+
+
 
 @media (prefers-color-scheme: light) {
   :root {

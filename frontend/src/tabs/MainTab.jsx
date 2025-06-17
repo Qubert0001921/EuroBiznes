@@ -3,7 +3,7 @@ import { websocket } from '../websocket'
 import cfg from "../config"
 import eventTypes from "../eventTypes"
 import httpRequest from "../httpRequest"
-
+import './MainTab.css'
 function MainTab() {
     const [moneyAmount, setMoneyAmount] = useState(0)
     const [receiverID, setReceiverID] = useState(0)
@@ -20,6 +20,7 @@ function MainTab() {
         }
     }
     useEffect(() => {
+        userID = localStorage.getItem(cfg.userIDKey)
         async function fetchUsers(){
             let response = await httpRequest.get("/users")
             console.log("kupa")
@@ -29,12 +30,12 @@ function MainTab() {
             console.log(findCurrentUser(usersRes))
             setCurrentUser(findCurrentUser(usersRes))
         }
+        fetchUsers()
 
 
         let newOption = document.createElement("option")
         newOption.value = 
         document.getElementById("select-people").appendChild
-        fetchUsers()
 
         
         websocket.onmessage = function (event){
@@ -77,22 +78,24 @@ function MainTab() {
 
 
     return (
-        <>
-            <label>Your balance:</label>
-            <label>{currentUser?.money}</label>
+        <div id="box">
+            <div id="box-balance">
+                <label id="money-label">Your balance:</label>
+                <div id="money"><label>{currentUser.money}</label></div>
+                
+            </div>    
+            
             <label>Where: </label>  
-            <label id="balance"></label>
             <select id='select-people' value={receiverID} onChange={e => setReceiverID(e.target.value)}>
-                <option value={0}>Please select receiver</option>
-                {
-                    users.map(user => <option value={user.id} key={user.id}>{user.name}</option>)
-                }
+                    <option value={0}>Please select receiver</option>
+                    {
+                        users.map(user => <option value={user.id} key={user.id}>{user.name}</option>)
+                    }
             </select>
-            <p> {userID}</p>
             <label>How much money: </label>
             <input id='inp-money-amount' type='text' value={moneyAmount} onChange={e => setMoneyAmount(e.target.value)} />
-            <button id='btn-send-money' onClick={onSendMoney}>Send Money</button>
-        </>
+        <button id='btn-send-money' onClick={onSendMoney}>Send Money</button>
+        </div>
     )
 }
 

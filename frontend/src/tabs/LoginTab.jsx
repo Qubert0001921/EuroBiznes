@@ -13,24 +13,24 @@ function LoginTab() {
 
     },[])
 
-    function onLogin() {
+    async function onLogin() {
 
         const url = cfg.backendURL + "/login"
         const obj = {
                 "login": login
             }
-        fetch(url, {
+        await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': "False"
             },
             "method": "POST",
-            "body": JSON.stringify(obj)
+            "body": JSON.stringify(obj) 
         }).then(res => res.text()).then(text => {
             let receivedJson = JSON.parse(text)
             let receivedID = receivedJson.id
             console.log(receivedID)
-            localStorage.setItem(cfg.userIDKey, receivedID)
+            sessionStorage.setItem(cfg.userIDKey, receivedID)
         })
         navigate("/app")
     }

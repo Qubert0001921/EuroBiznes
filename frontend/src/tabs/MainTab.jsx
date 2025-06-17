@@ -5,11 +5,12 @@ import eventTypes from "../eventTypes"
 import httpRequest from "../httpRequest"
 import './MainTab.css'
 function MainTab() {
-    const [moneyAmount, setMoneyAmount] = useState(0)
+    const [moneyAmount, setMoneyAmount] = useState()
     const [receiverID, setReceiverID] = useState(0)
     const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState({})
-    let userID = localStorage.getItem(cfg.userIDKey)
+    let userID = sessionStorage.getItem(cfg.userIDKey)
+    console.log(userID)
     
     function findCurrentUser(usersToGet){
         console.log(usersToGet.length)
@@ -20,7 +21,6 @@ function MainTab() {
         }
     }
     useEffect(() => {
-        userID = localStorage.getItem(cfg.userIDKey)
         async function fetchUsers(){
             let response = await httpRequest.get("/users")
             console.log("kupa")
@@ -79,13 +79,15 @@ function MainTab() {
 
     return (
         <div id="box">
-            <div id="box-balance">
-                <label id="money-label">Your balance:</label>
+            <div className="allBoxes" id="box-balance">
+                <div id="money-label-div"><label id="money-label">Your balance:</label></div>
                 <div id="money"><label>{currentUser.money}</label></div>
                 
             </div>    
             
-            <label>Where: </label>  
+
+            <div className="allBoxes" id="money-transfer-div">
+            <label>Money transfer</label>  
             <select id='select-people' value={receiverID} onChange={e => setReceiverID(e.target.value)}>
                     <option value={0}>Please select receiver</option>
                     {
@@ -93,7 +95,15 @@ function MainTab() {
                     }
             </select>
             <label>How much money: </label>
-            <input id='inp-money-amount' type='text' value={moneyAmount} onChange={e => setMoneyAmount(e.target.value)} />
+            <input id='inp-money-amount' type='text' value={moneyAmount} onChange={e => {
+                if(!(isNaN(e.target.value))){
+                    console.log(e.target.value)
+                    setMoneyAmount(e.target.value)
+                } else {
+                    setMoneyAmount(moneyAmount)
+                }
+                }} placeholder="Input how much money you want to send"/>
+            </div>
         <button id='btn-send-money' onClick={onSendMoney}>Send Money</button>
         </div>
     )

@@ -4,9 +4,11 @@ import { websocket } from "../websocket"
 import cfg from "../config" 
 import LoginModel from "../models/loginModel"
 import { useNavigate } from "react-router-dom"
-function LoginTab() {
+import "./LoginPage.css"
+
+function LoginPage({changePageToMain}) {
     const [login, setLogin] = useState("")
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -31,18 +33,26 @@ function LoginTab() {
             let receivedID = receivedJson.id
             console.log(receivedID)
             sessionStorage.setItem(cfg.userIDKey, receivedID)
+            changePageToMain()
         })
-        navigate("/app")
+        // navigate("/app")
     }
 
     return (
-        <>
-            <label>Login: </label>
-            <input type="text" value={login} onChange={e => setLogin(e.target.value)}/>
-            <button onClick={onLogin}>Login</button>
-        </>
+        <div id="login">
+            <div id="login-header">
+                <img src="/monopoly-logo.png" />
+            </div>
+            <div id="login-form">
+                <div className="login-form-section">
+                    <label>Login: </label>
+                    <input type="text" value={login} onChange={e => setLogin(e.target.value)}/>
+                    <button onClick={onLogin}>Login</button>
+                </div>
+            </div>
+        </div>
     )
 }
 
-export default LoginTab
+export default LoginPage
 

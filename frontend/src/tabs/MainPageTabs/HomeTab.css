@@ -3,6 +3,7 @@
     flex-direction: column;
     min-width: 270px;
     gap: 8px;
+    padding-top: 15vh;
 }
 .allBoxes{
     background-color: rgb(66, 66, 66);
@@ -39,4 +40,8 @@
     flex-direction: column;
     padding: 5px;
     row-gap: 5px;
+}
+
+#btn-send-money {
+    width: 100%;
 }

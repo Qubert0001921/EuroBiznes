@@ -1,0 +1,26 @@
+#login {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+}
+
+#login-header > img {
+    width: 450px
+}
+
+#login-header {
+    padding-top: 20vh;
+    margin-bottom: 20px;
+}
+
+#login-form {
+    width: 70%;
+}
+
+.login-form-section {
+    margin-bottom: 20px;
+}
+
+.login-form-section > button {
+    float: right;
+}

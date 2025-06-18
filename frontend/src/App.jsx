@@ -1,19 +1,30 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
-import MainTab from './tabs/MainTab'
-import LoginTab from './tabs/LoginTab'
+import MainPage from './pages/MainPage'
+import LoginPage from './pages/LoginPage'
 import ReactDOM from "react-dom/client"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import cfg from './config'
 function App() {
-    const [toggle, setToggle] = useState(false)
+    const [isLoginPage, setIsLoginPage] = useState(checkIfLoginPage())
+    const changePageToMain = useCallback(() => {
+        setIsLoginPage(false);
+    }, [])
+
+    function checkIfLoginPage() {
+        return sessionStorage.getItem(cfg.userIDKey) == null;
+    }
+
      return (
         <>
-            <BrowserRouter>
+            {/* <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<LoginTab/>}/>
-                    <Route path="/app" element={<MainTab/>}/>
+                    <Route path="/" element={<LoginPage/>}/>
+                    <Route path="/app" element={<MainPage/>}/>
                 </Routes>
-            </BrowserRouter>
+            </BrowserRouter> */}
+
+            {isLoginPage ? <LoginPage changePageToMain={changePageToMain} /> : <MainPage />}
         </>
     )
 }

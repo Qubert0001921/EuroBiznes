@@ -1,0 +1,83 @@
+#box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 270px;
+    gap: 8px;
+}
+.allBoxes{
+    background-color: rgb(66, 66, 66);
+    border: 3px solid;
+    border-color:rgb(95, 95, 95);
+    border-radius: 8px;
+}
+#box-balance{
+    min-height: 100px;
+    min-width: 70px;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    
+}
+#money{
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#money-label{
+    height: min-content;
+    padding-left: 5px;
+}
+#money-label-div{
+    display:flex;
+    height: min-content;
+    align-content: normal;
+}
+
+#money-transfer-div{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    row-gap: 5px;
+}
+
+#tab-options {
+    left:0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+    bottom:0;
+}
+
+.tab {
+    padding: 5px;
+    width: 100%;
+    font-weight: bold;
+    background-color: rgb(26, 26, 26);
+}
+
+.tab-active {
+    border-top: 2px solid #646cff;
+}
+
+.tab-inactive {
+    color: rgb(194, 194, 194);
+    border-top: 2px solid #161616;
+}
+
+.tab-active:hover, .tab-inactive:hover {
+    background-color: rgb(29, 29, 29);
+    cursor: pointer
+}
+
+#topbar {
+    position: fixed;
+    top:0;
+    height: 8vh;
+    width: 100%;
+    left: 0;
+    background-color: rgb(26, 26, 26);
+}

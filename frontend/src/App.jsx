@@ -15,6 +15,10 @@ function App() {
         return sessionStorage.getItem(cfg.userIDKey) == null;
     }
 
+    function changePageToLogin() {
+        setIsLoginPage(true)
+    }
+
      return (
         <>
             {/* <BrowserRouter>
@@ -24,7 +28,7 @@ function App() {
                 </Routes>
             </BrowserRouter> */}
 
-            {isLoginPage ? <LoginPage changePageToMain={changePageToMain} /> : <MainPage />}
+            {isLoginPage ? <LoginPage changePageToMain={changePageToMain} /> : <MainPage changePageToLogin={changePageToLogin} />}
         </>
     )
 }

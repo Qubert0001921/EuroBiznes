@@ -6,7 +6,7 @@ import httpRequest from "../httpRequest"
 import './MainPage.css'
 import HomeTab from "../tabs/MainPageTabs/HomeTab"
 import BankerTab from "../tabs/MainPageTabs/BankerTab"
-function MainPage() {
+function MainPage({changePageToLogin}) {
     const tabs = {
         home: 1,
         banker: 2
@@ -31,8 +31,12 @@ function MainPage() {
             let usersRes = await response.text()
             usersRes = JSON.parse(usersRes)
             setUsers(usersRes)
-            console.log(findCurrentUser(usersRes))
-            setCurrentUser(findCurrentUser(usersRes))
+            let crntUser = findCurrentUser(usersRes)
+            if(crntUser == null) {
+                onLogout()
+                return
+            }
+            setCurrentUser(crntUser)
         }
         fetchUsers()
         
@@ -63,10 +67,16 @@ function MainPage() {
         return currentTab == tabId ? "tab-active" : "tab-inactive"
     }
 
+    function onLogout() {
+        sessionStorage.removeItem(cfg.userIDKey)
+        changePageToLogin()
+    }
+
     return (
         <div>
             <div id="topbar">
                 Logged as {currentUser.name}
+                <button onClick={onLogout}>Log out</button>
             </div>
             {getTab()}
             <div id="tab-options">

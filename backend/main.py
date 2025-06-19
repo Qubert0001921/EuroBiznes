@@ -31,10 +31,15 @@ def root():
 
 
 manager = ConnectionManager()
-users: list[LoginModel] = []
+users: list[LoginModel] = [
+    LoginModel("Banker", "Banker")
+]
 
+history_log: list[str] = []
 
-
+@app.get("/history")
+def get_history():
+    return history_log
 
 @app.websocket_route("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -62,6 +67,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 receiverIndex = findUser(data["receiverID"])
                 users[senderIndex].money -= int(data["moneyAmount"])
                 users[receiverIndex].money += int(data["moneyAmount"])
+                history_log.append(f"{users[senderIndex].name} paid {users[receiverIndex].name} {data["moneyAmount"]}$")
 
                 json_data_to_send = {
                     "eventType": EventTypes.broadcastUsers,
@@ -84,9 +90,7 @@ async def login(loginRequest: LoginRequest):
                 return i
         return False
     
-    user = LoginModel()
-    user.name = loginRequest.login
-    user.id = str(uuid.uuid4())
+    user = LoginModel(str(uuid.uuid4()), loginRequest.login)
     doesUserExist = checkIfUserExists(userName=user.name, usersList=users)
     #print(doesUserExist)
     if  doesUserExist == False:

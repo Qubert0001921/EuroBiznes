@@ -1,9 +1,9 @@
 
 class LoginModel():
-    def __init__(self):
-        self.name = ""
-        self.id: str = 0
-        self.money: int = 3000
+    def __init__(self,id, name="", money=3000):
+        self.name = name
+        self.id: str = id
+        self.money: int = money
     
     @staticmethod
     def loginModelToJson(obj):

@@ -5,7 +5,7 @@ import eventTypes from "../../eventTypes"
 import httpRequest from "../../httpRequest"
 import './HomeTab.css'
 
-function HomeTab({users, currentUser}) {
+function HomeTab({users, currentUser, historyLog}) {
     const [moneyAmount, setMoneyAmount] = useState()
     const [receiverID, setReceiverID] = useState(0)
     
@@ -30,7 +30,7 @@ function HomeTab({users, currentUser}) {
 
     return (
         <div id="box">
-            <h2>Home</h2>
+            {/* <h2>Home</h2> */}
 
             <div className="allBoxes" id="box-balance">
                 <div id="money-label-div"><label id="money-label">Your balance:</label></div>
@@ -59,6 +59,9 @@ function HomeTab({users, currentUser}) {
             </div>
             <div>
                 <button id='btn-send-money' onClick={onSendMoney}>Send Money</button>
+            </div>
+            <div className="allBoxes" id="history-div">
+                {historyLog.map(x => <p>{x}</p>)}
             </div>
         </div>
     )

@@ -1,9 +1,11 @@
 #box{
     display: flex;
     flex-direction: column;
-    min-width: 270px;
+    justify-content: flex-start;
+    max-width: 270px;
     gap: 8px;
-    padding-top: 15vh;
+    padding-top: 5vh;
+    height: 100%;
 }
 .allBoxes{
     background-color: rgb(66, 66, 66);
@@ -44,4 +46,10 @@
 
 #btn-send-money {
     width: 100%;
+}
+
+
+#history-div{
+    height: 300px;
+    overflow-y: scroll;
 }

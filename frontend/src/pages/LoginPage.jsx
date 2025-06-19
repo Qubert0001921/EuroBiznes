@@ -8,12 +8,7 @@ import "./LoginPage.css"
 
 function LoginPage({changePageToMain}) {
     const [login, setLogin] = useState("")
-    // const navigate = useNavigate()
-
-    useEffect(() => {
-
-
-    },[])
+    const [isBankerMode, setIsBankerMode] = useState(0)
 
     async function onLogin() {
 
@@ -33,6 +28,7 @@ function LoginPage({changePageToMain}) {
             let receivedID = receivedJson.id
             console.log(receivedID)
             sessionStorage.setItem(cfg.userIDKey, receivedID)
+            sessionStorage.setItem(cfg.bankerModeKey, isBankerMode)
             changePageToMain()
         })
         // navigate("/app")
@@ -48,6 +44,11 @@ function LoginPage({changePageToMain}) {
                     <label>Login: </label>
                     <input type="text" value={login} onChange={e => setLogin(e.target.value)}/>
                     <button onClick={onLogin}>Login</button>
+                    <div id="checkbox-div">
+                        <input id="checkbox" type="checkbox" value={isBankerMode} onChange={() => setIsBankerMode(!isBankerMode)} />
+                        <label>Banker mode</label>
+                    </div>
+                    
                 </div>
             </div>
         </div>

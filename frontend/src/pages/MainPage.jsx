@@ -14,7 +14,12 @@ function MainPage({changePageToLogin}) {
     const [currentTab, setCurrentTab] = useState(tabs.home)
     const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState({})
+    const [historyLog, setHistoryLog] = useState([])
+
     let userID = sessionStorage.getItem(cfg.userIDKey)
+    let bankerMode = sessionStorage.getItem(cfg.bankerModeKey)
+    console.log(bankerMode)
+    console.log(Boolean(bankerMode))
 
     function findCurrentUser(usersToGet){
         console.log(usersToGet.length)
@@ -24,6 +29,15 @@ function MainPage({changePageToLogin}) {
             }
         }
     }
+
+    function getHistory() {
+        let url = cfg.backendUrl + "/history"
+        httpRequest.get("/history").then(res => res.text()).then(history => {
+            console.log(history)
+            setHistoryLog(JSON.parse(history).reverse())
+        })
+    }
+
     useEffect(() => {
         async function fetchUsers(){
             let response = await httpRequest.get("/users")
@@ -39,6 +53,7 @@ function MainPage({changePageToLogin}) {
             setCurrentUser(crntUser)
         }
         fetchUsers()
+        getHistory()
         
         websocket.onmessage = function (event){
             let data = event.data
@@ -48,6 +63,8 @@ function MainPage({changePageToLogin}) {
                 console.log(data)
                 setCurrentUser(findCurrentUser(data))
                 setUsers(data)
+                
+                getHistory()
             }
         }
         
@@ -57,9 +74,9 @@ function MainPage({changePageToLogin}) {
     function getTab() {
         switch (currentTab) {
             case tabs.home:
-                return <HomeTab users={users} currentUser={currentUser} />
+                return <HomeTab users={users} currentUser={currentUser} historyLog={historyLog} />
             case tabs.banker:
-                return <BankerTab />
+                return <BankerTab users={users} />
         }
     }
 
@@ -73,16 +90,18 @@ function MainPage({changePageToLogin}) {
     }
 
     return (
-        <div>
+        <div id="tab-system">
             <div id="topbar">
                 Logged as {currentUser.name}
                 <button onClick={onLogout}>Log out</button>
             </div>
-            {getTab()}
-            <div id="tab-options">
+            <div id="tab-content">
+                {getTab()}
+            </div>
+            {bankerMode != "0" ? (<div id="tab-options">
                 <div className={`tab ${getTabStateClass(tabs.home)}`}onClick={() => setCurrentTab(tabs.home)}>Home</div>
                 <div className={`tab ${getTabStateClass(tabs.banker)}`} onClick={() => setCurrentTab(tabs.banker)} >Banker</div>
-            </div>
+            </div>) : <></>}
         </div>
     )
 }

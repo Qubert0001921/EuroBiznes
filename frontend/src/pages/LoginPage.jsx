@@ -43,13 +43,17 @@ function LoginPage({changePageToMain}) {
                 <div className="login-form-section">
                     <label>Login: </label>
                     <input type="text" value={login} onChange={e => setLogin(e.target.value)}/>
+                </div>
+                <div className="login-form-section">
                     <button onClick={onLogin}>Login</button>
+                </div>
+                <div className="login-form-section">
                     <div id="checkbox-div">
                         <input id="checkbox" type="checkbox" value={isBankerMode} onChange={() => setIsBankerMode(!isBankerMode)} />
                         <label>Banker mode</label>
                     </div>
-                    
                 </div>
+                    
             </div>
         </div>
     )

@@ -10,7 +10,7 @@
 
 #login-header {
     padding-top: 20vh;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 #login-form {
@@ -22,24 +22,32 @@
 }
 
 .login-form-section {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     width: 250px;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
 }
 
-.login-form-section > button {
-    float: right;
+.login-form-section > button, .login-form-section > input {
+    width: 100%;
 }
 
 #checkbox{
-    width:25px;
+    width:20px;
     height: 25px;
 }
+
 #checkbox-div{
     display: flex;
     flex-direction: row;
     justify-content: center;
     place-items: center;
+}
+
+@media(max-width: 450px) {
+    #login-header > img {
+        width: 350px
+    }
 }

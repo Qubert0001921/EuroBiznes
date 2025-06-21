@@ -64,6 +64,8 @@
     font-weight: bold;
     background-color: rgb(26, 26, 26);
     height: 100%;
+    color: #646cff;;
+    font-size: 23px;
 }
 
 .tab-active {
@@ -71,8 +73,8 @@
 }
 
 .tab-inactive {
-    color: rgb(194, 194, 194);
-    border-top: 2px solid #161616;
+    color: #afafaf;
+    border-top: 2px solid #afafaf;
 }
 
 .tab-active:hover, .tab-inactive:hover {
@@ -87,6 +89,19 @@
     width: 100%;
     left: 0;
     background-color: rgb(26, 26, 26);
+}
+
+#topbar-content {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    place-items: center;
+    gap: 10px;
+}
+
+#topbar-content > img {
+    width: 50px;
 }
 
 #tab-system {

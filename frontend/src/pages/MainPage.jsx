@@ -6,6 +6,7 @@ import httpRequest from "../httpRequest"
 import './MainPage.css'
 import HomeTab from "../tabs/MainPageTabs/HomeTab"
 import BankerTab from "../tabs/MainPageTabs/BankerTab"
+import MessageBox from "../components/Messagebox"
 function MainPage({changePageToLogin}) {
     const tabs = {
         home: 1,
@@ -15,6 +16,7 @@ function MainPage({changePageToLogin}) {
     const [users, setUsers] = useState([])
     const [currentUser, setCurrentUser] = useState({})
     const [historyLog, setHistoryLog] = useState([])
+    const [showLogoutMsgBox, setShowLogoutMsgBox] = useState(false)
 
     let userID = sessionStorage.getItem(cfg.userIDKey)
     let bankerMode = sessionStorage.getItem(cfg.bankerModeKey)
@@ -86,21 +88,26 @@ function MainPage({changePageToLogin}) {
 
     function onLogout() {
         sessionStorage.removeItem(cfg.userIDKey)
+        setShowLogoutMsgBox(false)
         changePageToLogin()
     }
 
     return (
         <div id="tab-system">
             <div id="topbar">
-                Logged as {currentUser.name}
-                <button onClick={onLogout}>Log out</button>
+                <div id="topbar-content">
+                    <button onClick={() => setShowLogoutMsgBox(true)}>Log out</button>
+                    <p>{currentUser.name}</p>
+                    <img src="/user.png" />
+                </div>
             </div>
             <div id="tab-content">
+                {showLogoutMsgBox ? <MessageBox title="Alert" message="Do you want to log out?" onYes={onLogout} onNo={() => setShowLogoutMsgBox(false)} /> : <></>}
                 {getTab()}
             </div>
             {bankerMode != "0" ? (<div id="tab-options">
-                <div className={`tab ${getTabStateClass(tabs.home)}`}onClick={() => setCurrentTab(tabs.home)}>Home</div>
-                <div className={`tab ${getTabStateClass(tabs.banker)}`} onClick={() => setCurrentTab(tabs.banker)} >Banker</div>
+                <div className={`tab ${getTabStateClass(tabs.home)}`}onClick={() => setCurrentTab(tabs.home)}><i class={`fi fi-${currentTab == tabs.home ? "ss" : "rr"}-home`}></i></div>
+                <div className={`tab ${getTabStateClass(tabs.banker)}`} onClick={() => setCurrentTab(tabs.banker)} ><i class={`fi fi-${currentTab == tabs.banker ? "sr" : "rr"}-credit-card`}></i></div>
             </div>) : <></>}
         </div>
     )

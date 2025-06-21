@@ -32,7 +32,7 @@ def root():
 
 manager = ConnectionManager()
 users: list[LoginModel] = [
-    LoginModel("Banker", "Banker")
+    LoginModel("Bank", "Bank")
 ]
 
 history_log: list[str] = []

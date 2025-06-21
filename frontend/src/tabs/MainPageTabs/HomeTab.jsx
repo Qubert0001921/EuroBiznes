@@ -4,10 +4,12 @@ import cfg from "../../config"
 import eventTypes from "../../eventTypes"
 import httpRequest from "../../httpRequest"
 import './HomeTab.css'
+import MessageBox from "../../components/Messagebox"
 
 function HomeTab({users, currentUser, historyLog}) {
     const [moneyAmount, setMoneyAmount] = useState()
     const [receiverID, setReceiverID] = useState(0)
+    const [showReceiverMsgBox, setShowReceiverMsgBox] = useState(false)
     
     let userID = sessionStorage.getItem(cfg.userIDKey)
 
@@ -23,7 +25,7 @@ function HomeTab({users, currentUser, historyLog}) {
             }
             websocket.send(JSON.stringify(data))
         } else{
-            alert("Please select receiver")
+            setShowReceiverMsgBox(true)
         }
     }
 
@@ -33,6 +35,7 @@ function HomeTab({users, currentUser, historyLog}) {
             <div id="tab-header">
                 <label >Home</label>
             </div>
+            {showReceiverMsgBox ? <MessageBox title="Alert" message="Please select receiver" isNo={false} onYes={() => {setShowReceiverMsgBox(false)}} /> : <></>}
             <div id="box">
                 <div id="money-transfer">
                     <div className="allBoxes" id="box-balance">
